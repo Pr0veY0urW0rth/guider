@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:guider/src/features/sign_in/domain/validation/password_formz.dart';
 import 'package:guider/src/features/sign_in/domain/validation/username_formz.dart';
-import 'package:guider/src/features/sign_in/presentation/notifier/sign_in_state.dart';
+import 'package:guider/src/features/sign_in/presentation/providers/sign_in_state.dart';
 
 class SignInNotifier extends StateNotifier<SignInState> {
   SignInNotifier() : super(const SignInState());
