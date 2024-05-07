@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:guider/src/features/sign_in/presentation/notifier/sign_in_controller.dart';
+import 'package:guider/src/features/sign_in/presentation/providers/sign_in_controller.dart';
 import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_button.dart';
 import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_textfield.dart';
 
