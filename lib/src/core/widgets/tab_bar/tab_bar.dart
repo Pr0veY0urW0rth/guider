@@ -29,13 +29,13 @@ class _BottomNavigatonPageState extends ConsumerState<BottomNavigatonPage> {
           );
           setState(() {});
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.attach_money_sharp),
+            icon: Icon(Icons.attach_money_sharp),
             label: 'Карта',
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
+            icon: Icon(Icons.person),
             label: 'Пользователь',
           ),
         ],

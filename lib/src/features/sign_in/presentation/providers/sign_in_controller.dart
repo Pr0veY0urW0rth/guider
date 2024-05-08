@@ -23,6 +23,19 @@ class SignInNotifier extends StateNotifier<SignInState> {
     return Formz.validate(
         [username ?? state.username, password ?? state.password]);
   }
+
+  void changePasswordVisibility() {
+    state = state.copyWith(isPasswordObscured: !state.isPasswordObscured);
+  }
+
+  void signIn() {
+    //todo : add repository
+    state = state.copyWith(status: SignInStatus.loading);
+
+    Future.delayed(const Duration(seconds: 5));
+
+    state.copyWith(status: SignInStatus.success);
+  }
 }
 
 final signInNotifierProvider =

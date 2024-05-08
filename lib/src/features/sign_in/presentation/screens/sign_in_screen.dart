@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:guider/src/core/router/app_router.dart';
 import 'package:guider/src/features/sign_in/presentation/providers/sign_in_controller.dart';
+import 'package:guider/src/features/sign_in/presentation/providers/sign_in_state.dart';
+import 'package:guider/src/features/sign_in/presentation/widgets/password_visibility_button.dart';
 import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_button.dart';
 import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_textfield.dart';
 
@@ -13,15 +17,26 @@ class SignInScreen extends ConsumerWidget {
     final password = ref.watch(signInNotifierProvider).password;
     final isPasswordObscured =
         ref.watch(signInNotifierProvider).isPasswordObscured;
+    final formStatus = ref.watch(signInNotifierProvider).status;
+
     return GestureDetector(
-      onTap: () => null,
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text('Guider'),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               SignInTextField(
                 label: 'Имя пользователя',
+                hintText: 'Введите имя пользователя',
                 onChanged: (username) => ref
                     .read(signInNotifierProvider.notifier)
                     .updateUsername(username),
@@ -29,6 +44,7 @@ class SignInScreen extends ConsumerWidget {
               ),
               SignInTextField(
                 label: 'Пароль',
+                hintText: 'Введите пароль',
                 inputType: isPasswordObscured
                     ? TextInputType.text
                     : TextInputType.visiblePassword,
@@ -36,13 +52,26 @@ class SignInScreen extends ConsumerWidget {
                     .read(signInNotifierProvider.notifier)
                     .updatePassword(password),
                 validator: (value) => password.error?.getMessage(),
-
+                suffixIcon: PasswordVisibilityButton(
+                  isPasswordObscured: isPasswordObscured,
+                  onTap: () => ref
+                      .read(signInNotifierProvider.notifier)
+                      .changePasswordVisibility(),
+                ),
                 //obscureText: isPasswordObscured,
               ),
-              SignInButton(
-                'Войти',
-                enabled: ref.watch(signInNotifierProvider).formIsValid,
-              ),
+              formStatus.isLoading
+                  ? const CircularProgressIndicator()
+                  : SignInButton(
+                      'Войти',
+                      enabled: ref.watch(signInNotifierProvider).formIsValid,
+                      onPressed: () {
+                        if (ref.read(signInNotifierProvider).status.isSuccess) {
+                          ref.invalidate(signInNotifierProvider);
+                          context.go(GuiderNavigationHelper.mapPath);
+                        }
+                      },
+                    ),
             ],
           ),
         ),
