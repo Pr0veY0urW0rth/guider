@@ -31,7 +31,7 @@ class _BottomNavigatonPageState extends ConsumerState<BottomNavigatonPage> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money_sharp),
+            icon: Icon(Icons.map),
             label: 'Карта',
           ),
           BottomNavigationBarItem(
