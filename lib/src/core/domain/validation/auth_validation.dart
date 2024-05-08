@@ -29,14 +29,25 @@ class RegexValidator implements StringValidator {
 
 class UsernameSubmitRegexValidator extends RegexValidator {
   UsernameSubmitRegexValidator()
-      : super(regexSource: r'(^[a-zA-Z0-9_.+-]{6,60}$)');
+      : super(regexSource: r'(^[a-zA-Z0-9_.+-]{8,60}$)');
 }
 
 class PasswordSubmitRegexValidator extends RegexValidator {
   PasswordSubmitRegexValidator()
       : super(
             regexSource:
-                r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*();:,."-_/#?&])[A-Za-z\d@$!%*();:,."-_/#?&]{6,60}$');
+                r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*();:,."-_/#?&])[A-Za-z\d@$!%*();:,."-_/#?&]{8,60}$');
+}
+
+class EmailSubmitRegexValidator extends RegexValidator {
+  EmailSubmitRegexValidator()
+      : super(
+            regexSource:
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+}
+
+class PhoneSubmitRegexValidator extends RegexValidator {
+  PhoneSubmitRegexValidator() : super(regexSource: '^[0-9]{10}');
 }
 
 class NonEmptyStringValidator extends StringValidator {

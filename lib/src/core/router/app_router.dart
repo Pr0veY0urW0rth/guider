@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:guider/src/core/widgets/tab_bar/tab_bar.dart';
 import 'package:guider/src/features/sign_in/presentation/screens/sign_in_screen.dart';
+import 'package:guider/src/features/sign_up/presentation/screens/sign_up_screen.dart';
 
 class GuiderNavigationHelper {
   static final GuiderNavigationHelper _instance =
@@ -27,6 +28,7 @@ class GuiderNavigationHelper {
       router.routeInformationParser;
 
   static const String signInPath = '/signIn';
+  static const String signUpPath = '/signUp';
 
   static const String mapPath = '/map';
   static const String userPath = '/user';
@@ -88,6 +90,16 @@ class GuiderNavigationHelper {
         pageBuilder: (context, state) {
           return getPage(
             child: const SignInScreen(),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: parentNavigatorKey,
+        path: signUpPath,
+        pageBuilder: (context, state) {
+          return getPage(
+            child: const SignUpScreen(),
             state: state,
           );
         },
