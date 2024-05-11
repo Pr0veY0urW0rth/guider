@@ -6,6 +6,7 @@ import 'package:guider/src/features/sign_in/presentation/providers/sign_in_contr
 import 'package:guider/src/features/sign_in/presentation/providers/sign_in_state.dart';
 import 'package:guider/src/features/sign_in/presentation/widgets/password_visibility_button.dart';
 import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_button.dart';
+import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_link.dart';
 import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_textfield.dart';
 
 class SignInScreen extends ConsumerWidget {
@@ -32,47 +33,63 @@ class SignInScreen extends ConsumerWidget {
           title: const Text('Guider'),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SignInTextField(
-                label: 'Имя пользователя',
-                hintText: 'Введите имя пользователя',
-                onChanged: (username) => ref
-                    .read(signInNotifierProvider.notifier)
-                    .updateUsername(username),
-                validator: (value) => username.error?.getMessage(),
-              ),
-              SignInTextField(
-                label: 'Пароль',
-                hintText: 'Введите пароль',
-                inputType: isPasswordObscured
-                    ? TextInputType.text
-                    : TextInputType.visiblePassword,
-                onChanged: (password) => ref
-                    .read(signInNotifierProvider.notifier)
-                    .updatePassword(password),
-                validator: (value) => password.error?.getMessage(),
-                suffixIcon: PasswordVisibilityButton(
-                  isPasswordObscured: isPasswordObscured,
-                  onTap: () => ref
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SignInTextField(
+                  label: 'Имя пользователя',
+                  hintText: 'Введите имя пользователя',
+                  onChanged: (username) => ref
                       .read(signInNotifierProvider.notifier)
-                      .changePasswordVisibility(),
+                      .updateUsername(username),
+                  validator: (value) => username.error?.getMessage(),
                 ),
-                //obscureText: isPasswordObscured,
-              ),
-              formStatus.isLoading
-                  ? const CircularProgressIndicator()
-                  : SignInButton(
-                      'Войти',
-                      enabled: ref.watch(signInNotifierProvider).formIsValid,
-                      onPressed: () {
-                        if (ref.read(signInNotifierProvider).status.isSuccess) {
-                          ref.invalidate(signInNotifierProvider);
-                          context.go(GuiderNavigationHelper.mapPath);
-                        }
-                      },
-                    ),
-            ],
+                SignInTextField(
+                  label: 'Пароль',
+                  hintText: 'Введите пароль',
+                  inputType: isPasswordObscured
+                      ? TextInputType.text
+                      : TextInputType.visiblePassword,
+                  onChanged: (password) => ref
+                      .read(signInNotifierProvider.notifier)
+                      .updatePassword(password),
+                  validator: (value) => password.error?.getMessage(),
+                  obscureText: isPasswordObscured,
+                  suffixIcon: PasswordVisibilityButton(
+                    isPasswordObscured: isPasswordObscured,
+                    onTap: () => ref
+                        .read(signInNotifierProvider.notifier)
+                        .changePasswordVisibility(),
+                  ),
+                ),
+                formStatus.isLoading
+                    ? const CircularProgressIndicator()
+                    : SignInButton(
+                        'Войти',
+                        enabled: ref.watch(signInNotifierProvider).formIsValid,
+                        onPressed: () async {
+                          await ref
+                              .read(signInNotifierProvider.notifier)
+                              .signIn();
+                          if (ref
+                              .read(signInNotifierProvider)
+                              .status
+                              .isSuccess) {
+                            ref.invalidate(signInNotifierProvider);
+                            if (context.mounted) {
+                              context.go(GuiderNavigationHelper.mapPath);
+                            }
+                          }
+                        },
+                      ),
+                SignInLink(
+                  onLinkTap: () =>
+                      context.go(GuiderNavigationHelper.signUpPath),
+                )
+              ],
+            ),
           ),
         ),
       ),

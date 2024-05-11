@@ -6,6 +6,8 @@ class SignUpScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
+    return Center(
+      child: Text('Sign Up'),
+    );
   }
 }

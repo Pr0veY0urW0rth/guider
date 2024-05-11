@@ -12,7 +12,7 @@ class PasswordVisibilityButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(1),
       child: GestureDetector(
-        onTap: () => onTap,
+        onTap: () => onTap!(),
         child: Icon(isPasswordObscured
             ? Icons.visibility_rounded
             : Icons.visibility_off_rounded),
