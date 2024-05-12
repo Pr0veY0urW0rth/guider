@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class SignInLink extends StatelessWidget {
-  const SignInLink({super.key, this.onLinkTap});
+class SignUpLink extends StatelessWidget {
+  const SignUpLink({super.key, this.onLinkTap});
 
   final VoidCallback? onLinkTap;
 
@@ -13,14 +13,14 @@ class SignInLink extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: RichText(
         text: TextSpan(
-          text: 'Нет аккаунта? ',
+          text: 'Уже есть аккаунт? ',
           style: const TextStyle(
               fontSize: 14,
               fontFamily: 'Plus Jakarta Sans',
               color: Colors.black),
           children: [
             TextSpan(
-              text: 'Давайте создадим!',
+              text: 'Давайте войдем!',
               style: const TextStyle(
                 fontSize: 14,
                 fontFamily: 'Plus Jakarta Sans',

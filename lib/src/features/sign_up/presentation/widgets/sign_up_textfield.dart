@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SignInTextField extends StatelessWidget {
-  const SignInTextField(
+class SignUpTextField extends StatelessWidget {
+  const SignUpTextField(
       {super.key,
       this.onChanged,
       this.controller,
+      this.errorText,
       this.focusNode,
       this.hintText,
       this.inputType = TextInputType.text,
@@ -15,6 +16,7 @@ class SignInTextField extends StatelessWidget {
 
   final Function(String)? onChanged;
   final TextEditingController? controller;
+  final String? errorText;
   final FocusNode? focusNode;
   final String? hintText;
   final TextInputType inputType;

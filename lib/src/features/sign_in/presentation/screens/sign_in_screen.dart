@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:guider/src/core/router/app_router.dart';
-import 'package:guider/src/features/sign_in/presentation/providers/sign_in_controller.dart';
-import 'package:guider/src/features/sign_in/presentation/providers/sign_in_state.dart';
-import 'package:guider/src/features/sign_in/presentation/widgets/password_visibility_button.dart';
-import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_button.dart';
-import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_link.dart';
-import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_textfield.dart';
+import 'package:guider/src/features/sign_in/presentation/providers/sign_in_state_providers.dart';
+import 'package:guider/src/features/sign_in/presentation/widgets/sign_in_widgets.dart';
 
 class SignInScreen extends ConsumerWidget {
   const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final username = ref.watch(signInNotifierProvider).username;
+    final email = ref.watch(signInNotifierProvider).email;
     final password = ref.watch(signInNotifierProvider).password;
     final isPasswordObscured =
         ref.watch(signInNotifierProvider).isPasswordObscured;
@@ -30,25 +27,28 @@ class SignInScreen extends ConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Guider'),
+          title: const SignInTitle(text: 'Guider'),
         ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SignInTextField(
-                  label: 'Имя пользователя',
-                  hintText: 'Введите имя пользователя',
-                  onChanged: (username) => ref
-                      .read(signInNotifierProvider.notifier)
-                      .updateUsername(username),
-                  validator: (value) => username.error?.getMessage(),
+                const SignInTitle(
+                  text: 'Добро пожаловать',
                 ),
+                const Gap(20),
                 SignInTextField(
-                  label: 'Пароль',
-                  hintText: 'Введите пароль',
+                  hintText: 'Email',
+                  onChanged: (email) => ref
+                      .read(signInNotifierProvider.notifier)
+                      .updateEmail(email),
+                  validator: (value) => email.error?.getMessage(),
+                ),
+                const Gap(16),
+                SignInTextField(
+                  hintText: 'Пароль',
                   inputType: isPasswordObscured
                       ? TextInputType.text
                       : TextInputType.visiblePassword,
@@ -64,6 +64,7 @@ class SignInScreen extends ConsumerWidget {
                         .changePasswordVisibility(),
                   ),
                 ),
+                const Gap(16),
                 formStatus.isLoading
                     ? const CircularProgressIndicator()
                     : SignInButton(
@@ -73,10 +74,7 @@ class SignInScreen extends ConsumerWidget {
                           await ref
                               .read(signInNotifierProvider.notifier)
                               .signIn();
-                          if (ref
-                              .read(signInNotifierProvider)
-                              .status
-                              .isSuccess) {
+                          if (formStatus.isSuccess) {
                             ref.invalidate(signInNotifierProvider);
                             if (context.mounted) {
                               context.go(GuiderNavigationHelper.mapPath);
@@ -84,6 +82,7 @@ class SignInScreen extends ConsumerWidget {
                           }
                         },
                       ),
+                const Gap(16),
                 SignInLink(
                   onLinkTap: () =>
                       context.go(GuiderNavigationHelper.signUpPath),

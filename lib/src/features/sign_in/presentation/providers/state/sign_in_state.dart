@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:guider/src/features/sign_in/domain/validation/password_formz.dart';
-import 'package:guider/src/features/sign_in/domain/validation/username_formz.dart';
+import 'package:guider/src/features/sign_in/domain/sign_in_domain.dart';
 
 enum SignInStatus { initial, loading, success, failure }
 
@@ -13,7 +12,7 @@ extension SignInStatusX on SignInStatus {
 
 class SignInState extends Equatable {
   const SignInState({
-    this.username = const UsernameFormz.pure(),
+    this.email = const EmailFormz.pure(),
     this.password = const PasswordFormz.pure(),
     this.formIsValid = false,
     this.isPasswordObscured = true,
@@ -24,11 +23,11 @@ class SignInState extends Equatable {
   final bool isPasswordObscured;
   final PasswordFormz password;
   final SignInStatus status;
-  final UsernameFormz username;
+  final EmailFormz email;
 
   @override
   List<Object?> get props => [
-        username,
+        email,
         password,
         formIsValid,
         isPasswordObscured,
@@ -39,14 +38,14 @@ class SignInState extends Equatable {
   bool get stringify => true;
 
   SignInState copyWith({
-    UsernameFormz? username,
+    EmailFormz? email,
     PasswordFormz? password,
     bool? formIsValid,
     bool? isPasswordObscured,
     SignInStatus? status,
   }) {
     return SignInState(
-      username: username ?? this.username,
+      email: email ?? this.email,
       password: password ?? this.password,
       formIsValid: formIsValid ?? this.formIsValid,
       isPasswordObscured: isPasswordObscured ?? this.isPasswordObscured,

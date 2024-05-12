@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SignInButton extends StatelessWidget {
-  const SignInButton(this.text,
+class SignUpButton extends StatelessWidget {
+  const SignUpButton(this.text,
       {super.key,
       this.height = 42,
       this.onPressed,

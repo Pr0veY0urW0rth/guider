@@ -1,16 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:guider/src/features/sign_in/domain/validation/password_formz.dart';
-import 'package:guider/src/features/sign_in/domain/validation/username_formz.dart';
-import 'package:guider/src/features/sign_in/presentation/providers/sign_in_state.dart';
+import 'package:guider/src/features/sign_in/domain/sign_in_domain.dart';
+import 'package:guider/src/features/sign_in/presentation/providers/state/sign_in_state.dart';
 
 class SignInNotifier extends StateNotifier<SignInState> {
   SignInNotifier() : super(const SignInState());
 
-  void updateUsername(String value) {
-    final username = UsernameFormz.dirty(value);
-    final formIsValid = _validate(username: username);
-    state = state.copyWith(username: username, formIsValid: formIsValid);
+  void updateEmail(String value) {
+    final email = EmailFormz.dirty(value);
+    final formIsValid = _validate(email: email);
+    state = state.copyWith(email: email, formIsValid: formIsValid);
   }
 
   void updatePassword(String value) {
@@ -19,9 +18,8 @@ class SignInNotifier extends StateNotifier<SignInState> {
     state = state.copyWith(password: password, formIsValid: formIsValid);
   }
 
-  bool _validate({UsernameFormz? username, PasswordFormz? password}) {
-    return Formz.validate(
-        [username ?? state.username, password ?? state.password]);
+  bool _validate({EmailFormz? email, PasswordFormz? password}) {
+    return Formz.validate([email ?? state.email, password ?? state.password]);
   }
 
   void changePasswordVisibility() {
