@@ -11,6 +11,7 @@ class SignUpTextField extends StatelessWidget {
       this.inputType = TextInputType.text,
       this.obscureText = false,
       this.onEditingComplete,
+      this.prefixIcon,
       this.suffixIcon,
       this.validator});
 
@@ -22,6 +23,7 @@ class SignUpTextField extends StatelessWidget {
   final TextInputType inputType;
   final bool obscureText;
   final VoidCallback? onEditingComplete;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final FormFieldValidator<String>? validator;
 
@@ -32,7 +34,8 @@ class SignUpTextField extends StatelessWidget {
       focusNode: focusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textInputAction: TextInputAction.next,
-      decoration: InputDecoration(hintText: hintText, suffixIcon: suffixIcon),
+      decoration: InputDecoration(
+          hintText: hintText, prefixIcon: prefixIcon, suffixIcon: suffixIcon),
       obscureText: obscureText,
       autocorrect: false,
       keyboardType: inputType,

@@ -1,8 +1,10 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:guider/src/core/router/app_router.dart';
+import 'package:guider/src/features/sign_up/presentation/widgets/country_code.dart';
 
 import '../providers/sign_up_state_providers.dart';
 import '../widgets/sign_up_widgets.dart';
@@ -55,6 +57,17 @@ class SignUpScreen extends ConsumerWidget {
                 const Gap(8),
                 SignUpTextField(
                   hintText: 'Номер телефона',
+                  prefixIcon: CountryCodePicker(
+                    code: '',
+                    onTap: () => showCountryPicker(
+                      context: context,
+                      showPhoneCode:
+                          true, // optional. Shows phone code before the country name.
+                      onSelect: (Country country) {
+                        print('Select country: ${country.flagEmoji}');
+                      },
+                    ),
+                  ),
                   onChanged: (phone) => ref
                       .read(signUpNotifierProvider.notifier)
                       .updatePhone(phone),
