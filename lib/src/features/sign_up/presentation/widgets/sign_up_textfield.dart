@@ -35,7 +35,10 @@ class SignUpTextField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-          hintText: hintText, prefixIcon: prefixIcon, suffixIcon: suffixIcon),
+          //Todo: fix issue with prefix icon
+          hintText: hintText,
+          //prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon),
       obscureText: obscureText,
       autocorrect: false,
       keyboardType: inputType,
