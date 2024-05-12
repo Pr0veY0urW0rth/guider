@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart';
+import 'package:yandex_maps_mapkit/mapkit_factory.dart';
 import 'package:yandex_maps_mapkit/yandex_map.dart';
 
 class MapScreen extends ConsumerWidget {
@@ -11,6 +12,10 @@ class MapScreen extends ConsumerWidget {
     MapWindow? _mapWindow;
     return Scaffold(
         appBar: AppBar(title: const Text('Карта')),
-        body: YandexMap(onMapCreated: (mapWindow) => _mapWindow = mapWindow));
+        body: YandexMap(onMapCreated: (mapWindow) {
+          _mapWindow = mapWindow;
+          WidgetsFlutterBinding.ensureInitialized();
+          mapkit.onStart();
+        }));
   }
 }
