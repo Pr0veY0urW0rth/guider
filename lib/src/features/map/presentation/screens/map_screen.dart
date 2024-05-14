@@ -15,8 +15,9 @@ class MapScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     MapWindow? _mapWindow;
     return Scaffold(
-        appBar: AppBar(title: const Text('Карта')),
-        body: Column(children: [
+      appBar: AppBar(title: const Text('Карта')),
+      body: Column(
+        children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.7,
             width: MediaQuery.of(context).size.width * 0.98,
@@ -34,24 +35,27 @@ class MapScreen extends ConsumerWidget {
             }),
           ),
           Expanded(
-              child: Align(
-            alignment: const AlignmentDirectional(0, 1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MapButton(
-                  'Все маршруты',
-                  onPressed: () => null,
-                ),
-                const Gap(20),
-                MapButton(
-                  'Создать маршрут',
-                  onPressed: () =>
-                      context.go(GuiderNavigationHelper.createRoutePath),
-                ),
-              ],
+            child: Align(
+              alignment: const AlignmentDirectional(0, 1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MapButton(
+                    'Все маршруты',
+                    onPressed: () => null,
+                  ),
+                  const Gap(20),
+                  MapButton(
+                    'Создать маршрут',
+                    onPressed: () =>
+                        context.go(GuiderNavigationHelper.createRoutePath),
+                  ),
+                ],
+              ),
             ),
-          ))
-        ]));
+          ),
+        ],
+      ),
+    );
   }
 }

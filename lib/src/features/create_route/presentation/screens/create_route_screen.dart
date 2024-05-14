@@ -63,7 +63,11 @@ class CreateRouteScreen extends ConsumerWidget {
                             .read(createRouteNotifierProvider.notifier)
                             .updateMarks(marks[index]),
                       );
-                    })
+                    }),
+                CreateRouteButton(
+                  'Сохранить',
+                  onPressed: () => context.go(GuiderNavigationHelper.mapPath),
+                ),
               ],
             ),
           ),
