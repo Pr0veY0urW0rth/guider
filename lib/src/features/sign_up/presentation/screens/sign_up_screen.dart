@@ -127,11 +127,11 @@ class SignUpScreen extends ConsumerWidget {
                           await ref
                               .read(signUpNotifierProvider.notifier)
                               .signUp();
-                          if (formStatus.isSuccess) {
-                            ref.invalidate(signUpNotifierProvider);
-                            if (context.mounted) {
-                              context.go(GuiderNavigationHelper.mapPath);
-                            }
+                          //if (formStatus.isSuccess) {
+                          ref.invalidate(signUpNotifierProvider);
+                          if (context.mounted) {
+                            context.go(GuiderNavigationHelper.mapPath);
+                            //}
                           }
                         },
                       ),

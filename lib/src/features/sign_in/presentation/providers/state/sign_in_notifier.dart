@@ -28,9 +28,9 @@ class SignInNotifier extends StateNotifier<SignInState> {
 
   Future<void> signIn() async {
     //todo : add repository
-    state = state.copyWith(status: SignInStatus.loading);
+    //state = state.copyWith(status: SignInStatus.loading);
 
-    Future.delayed(const Duration(seconds: 5));
+    //Future.delayed(const Duration(seconds: 5));
 
     state = state.copyWith(status: SignInStatus.success);
   }

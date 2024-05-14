@@ -47,7 +47,8 @@ class EmailSubmitRegexValidator extends RegexValidator {
 }
 
 class PhoneSubmitRegexValidator extends RegexValidator {
-  PhoneSubmitRegexValidator() : super(regexSource: '^[0-9]{10}');
+  PhoneSubmitRegexValidator()
+      : super(regexSource: r'^((\+7|7|8)+([0-9]){10})$');
 }
 
 class NonEmptyStringValidator extends StringValidator {
