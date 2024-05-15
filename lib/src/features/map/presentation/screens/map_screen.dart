@@ -42,7 +42,8 @@ class MapScreen extends ConsumerWidget {
                 children: [
                   MapButton(
                     'Все маршруты',
-                    onPressed: () => null,
+                    onPressed: () =>
+                        context.go(GuiderNavigationHelper.routesListPath),
                   ),
                   const Gap(20),
                   MapButton(

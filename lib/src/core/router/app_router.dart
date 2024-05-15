@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:guider/src/core/widgets/tab_bar/tab_bar.dart';
 import 'package:guider/src/features/create_route/presentation/screens/create_route_screen.dart';
 import 'package:guider/src/features/map/presentation/screens/map_screen.dart';
+import 'package:guider/src/features/routes_list/presentation/screens/routes_list_screen.dart';
 import 'package:guider/src/features/sign_in/presentation/screens/sign_in_screen.dart';
 import 'package:guider/src/features/sign_up/presentation/screens/sign_up_screen.dart';
 import 'package:guider/src/features/user_profile/presentation/screens/user_profile_screen.dart';
@@ -37,6 +38,7 @@ class GuiderNavigationHelper {
   static const String userPath = '/user';
 
   static const String createRoutePath = '/createRoute';
+  static const String routesListPath = '/routesList';
 
   factory GuiderNavigationHelper() {
     return _instance;
@@ -114,6 +116,13 @@ class GuiderNavigationHelper {
         path: createRoutePath,
         pageBuilder: (context, state) {
           return getPage(child: const CreateRouteScreen(), state: state);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: parentNavigatorKey,
+        path: routesListPath,
+        pageBuilder: (context, state) {
+          return getPage(child: const RoutesListScreen(), state: state);
         },
       ),
     ];
