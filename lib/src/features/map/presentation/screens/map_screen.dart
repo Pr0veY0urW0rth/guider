@@ -17,11 +17,14 @@ class MapScreen extends ConsumerWidget {
     final mapObjects = ref.watch(mapNotifierProvider).mapObjects;
     final startPoint = ref.watch(mapNotifierProvider).startPoint;
     final finalPoint = ref.watch(mapNotifierProvider).finalPoint;
+    final status = ref.watch(mapNotifierProvider).status;
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       // Some provider code that gets/sets some state
-      ref.read(mapNotifierProvider.notifier).initTest();
-      ref.read(mapNotifierProvider.notifier).requestRoutes();
+      if (status != MapStatus.success) {
+        ref.read(mapNotifierProvider.notifier).initTest();
+        ref.read(mapNotifierProvider.notifier).requestRoutes();
+      }
     });
     return Scaffold(
       appBar: AppBar(title: const Text('Карта')),

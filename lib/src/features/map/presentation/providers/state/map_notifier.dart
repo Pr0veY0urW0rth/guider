@@ -35,7 +35,8 @@ class MapNotifier extends StateNotifier<MapState> {
           strokeWidth: 3,
         ));
       });
-      state = state.copyWith(mapObjects: newMapObjects);
+      state =
+          state.copyWith(mapObjects: newMapObjects, status: MapStatus.success);
     }
   }
 
