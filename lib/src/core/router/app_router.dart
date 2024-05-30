@@ -56,7 +56,7 @@ class GuiderNavigationHelper {
                 path: mapPath,
                 pageBuilder: (context, GoRouterState state) {
                   return getPage(
-                    child: const MapScreen(),
+                    child: MapScreen(),
                     state: state,
                   );
                 },

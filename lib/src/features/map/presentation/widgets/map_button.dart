@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MapButton extends StatelessWidget {
   const MapButton(this.text,
-      {super.key, this.height = 42, this.onPressed, this.fontSize = 16});
+      {super.key, this.height = 42, this.onPressed, this.fontSize = 14});
 
   final double fontSize;
   final double height;
@@ -22,8 +22,10 @@ class MapButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.0),
             ),
           ),
-          minimumSize: MaterialStateProperty.all(
-              Size(MediaQuery.of(context).size.width * 0.4, height)),
+          minimumSize: WidgetStateProperty.all(
+              Size(MediaQuery.of(context).size.width * 0.3, height)),
+          maximumSize: WidgetStateProperty.all(
+              Size(MediaQuery.of(context).size.width * 0.5, height)),
         ),
         onPressed: onPressed,
         child: Padding(

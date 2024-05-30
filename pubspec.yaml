@@ -30,7 +30,7 @@ dependencies:
   riverpod_annotation: ^2.3.5
   supabase: ^2.1.2
   url_launcher: ^6.2.6
-  yandex_maps_mapkit: ^4.6.1-beta1
+  yandex_mapkit: ^4.0.2
 
 dev_dependencies:
   flutter_test:
