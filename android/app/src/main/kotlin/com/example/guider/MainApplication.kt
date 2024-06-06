@@ -8,6 +8,6 @@ class MainApplication: Application() {
   override fun onCreate() {
     super.onCreate()
     MapKitFactory.setLocale("YOUR_LOCALE") // Your preferred language. Not required, defaults to system language
-    MapKitFactory.setApiKey("ee433e84-e80a-46da-981e-4c9d7d45b564") // Your generated API key
+    MapKitFactory.setApiKey("05e2b170-5920-4985-8138-9ae81076d772") // Your generated API key
   }
 }

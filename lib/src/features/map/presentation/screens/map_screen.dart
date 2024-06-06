@@ -19,11 +19,10 @@ class MapScreen extends ConsumerWidget {
     final finalPoint = ref.watch(mapNotifierProvider).finalPoint;
     final status = ref.watch(mapNotifierProvider).status;
 
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      // Some provider code that gets/sets some state
-      if (status != MapStatus.success) {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (status == MapStatus.initial) {
         ref.read(mapNotifierProvider.notifier).initTest();
-        ref.read(mapNotifierProvider.notifier).requestRoutes();
+        await ref.read(mapNotifierProvider.notifier).requestRoutes();
       }
     });
     return Scaffold(
@@ -56,17 +55,18 @@ class MapScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    MapButton(
-                      'Все маршруты',
-                      onPressed: () =>
-                          context.go(GuiderNavigationHelper.routesListPath),
-                    ),
+                    MapButton('Все маршруты',
+                        onPressed: () => {
+                              context.go(GuiderNavigationHelper.routesListPath),
+                              ref.invalidate(mapNotifierProvider)
+                            }),
                     Gap(MediaQuery.of(context).size.width * 0.05),
-                    MapButton(
-                      'Создать маршрут',
-                      onPressed: () =>
-                          context.go(GuiderNavigationHelper.createRoutePath),
-                    ),
+                    MapButton('Создать маршрут',
+                        onPressed: () => {
+                              context
+                                  .go(GuiderNavigationHelper.createRoutePath),
+                              ref.invalidate(mapNotifierProvider)
+                            }),
                   ],
                 ),
               ),
