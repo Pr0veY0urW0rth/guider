@@ -14,8 +14,12 @@ class UserProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      ref.read(userProfileNotifierProvider.notifier).initUser();
+      await ref.read(userProfileNotifierProvider.notifier).initUser();
     });
+    final username = ref.watch(userProfileNotifierProvider).username.value;
+    final email = ref.watch(userProfileNotifierProvider).email.value;
+    final phone = ref.watch(userProfileNotifierProvider).phone.value;
+
     final isEditingEnabled =
         ref.watch(userProfileNotifierProvider).isEditingEnabled;
     return Scaffold(
@@ -23,75 +27,78 @@ class UserProfileScreen extends ConsumerWidget {
         title: const Text('Профиль'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: Image.network(
-                  'https://static.tildacdn.com/tild6338-3666-4133-a633-643664333838/photo.jpg',
-                  width: 140,
-                  height: 140,
-                  fit: BoxFit.cover,
+      body: username.isEmpty
+          ? CircularProgressIndicator()
+          : Padding(
+              padding: const EdgeInsets.all(8),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: Image.network(
+                        'https://static.tildacdn.com/tild6338-3666-4133-a633-643664333838/photo.jpg',
+                        width: 140,
+                        height: 140,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const Gap(10),
+                    UserProfileField(
+                      initalText: username,
+                      label: 'Имя пользователя',
+                      hintText: 'Имя пользователя',
+                      isEditable: isEditingEnabled,
+                      onChanged: (username) => ref
+                          .read(userProfileNotifierProvider.notifier)
+                          .updateUsername(username),
+                    ),
+                    const Gap(8),
+                    UserProfileField(
+                      initalText: email,
+                      label: 'Email',
+                      hintText: 'Email',
+                      isEditable: isEditingEnabled,
+                      onChanged: (email) => ref
+                          .read(userProfileNotifierProvider.notifier)
+                          .updateEmail(email),
+                    ),
+                    const Gap(8),
+                    UserProfileField(
+                      initalText: phone,
+                      label: 'Номер телефона',
+                      hintText: 'Номер телефона',
+                      isEditable: isEditingEnabled,
+                      onChanged: (phone) => ref
+                          .read(userProfileNotifierProvider.notifier)
+                          .updatePhone(phone),
+                    ),
+                    const Gap(16),
+                    UserProfileButton(
+                      isEditingEnabled ? 'Сохранить данные' : 'Изменить данные',
+                      onPressed: () => ref
+                          .read(userProfileNotifierProvider.notifier)
+                          .changeEditing(),
+                    ),
+                    const Gap(4),
+                    UserProfileLink(onLinkTap: () async {
+                      final Uri url =
+                          Uri.parse('https://nickkalibr.github.io/');
+                      if (!await launchUrl(url)) {
+                        throw Exception('Could not launch $url');
+                      }
+                    }),
+                    const Gap(8),
+                    UserProfileButton(
+                      'Выйти из аккаунта',
+                      onPressed: () =>
+                          context.go(GuiderNavigationHelper.signInPath),
+                    )
+                  ],
                 ),
               ),
-              const Gap(10),
-              UserProfileField(
-                initalText:
-                    ref.read(userProfileNotifierProvider).username.value,
-                label: 'Имя пользователя',
-                hintText: 'Имя пользователя',
-                isEditable: isEditingEnabled,
-                onChanged: (username) => ref
-                    .read(userProfileNotifierProvider.notifier)
-                    .updateUsername(username),
-              ),
-              const Gap(8),
-              UserProfileField(
-                initalText: ref.read(userProfileNotifierProvider).email.value,
-                label: 'Email',
-                hintText: 'Email',
-                isEditable: isEditingEnabled,
-                onChanged: (email) => ref
-                    .read(userProfileNotifierProvider.notifier)
-                    .updateEmail(email),
-              ),
-              const Gap(8),
-              UserProfileField(
-                initalText: ref.read(userProfileNotifierProvider).phone.value,
-                label: 'Номер телефона',
-                hintText: 'Номер телефона',
-                isEditable: isEditingEnabled,
-                onChanged: (phone) => ref
-                    .read(userProfileNotifierProvider.notifier)
-                    .updatePhone(phone),
-              ),
-              const Gap(16),
-              UserProfileButton(
-                isEditingEnabled ? 'Сохранить данные' : 'Изменить данные',
-                onPressed: () => ref
-                    .read(userProfileNotifierProvider.notifier)
-                    .changeEditing(),
-              ),
-              const Gap(4),
-              UserProfileLink(onLinkTap: () async {
-                final Uri url = Uri.parse('https://nickkalibr.github.io/');
-                if (!await launchUrl(url)) {
-                  throw Exception('Could not launch $url');
-                }
-              }),
-              const Gap(8),
-              UserProfileButton(
-                'Выйти из аккаунта',
-                onPressed: () => context.go(GuiderNavigationHelper.signInPath),
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

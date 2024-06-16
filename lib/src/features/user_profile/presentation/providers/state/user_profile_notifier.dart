@@ -26,8 +26,10 @@ class UserProfileNotifier extends StateNotifier<UserProfileState> {
     print(state.isEditingEnabled);
   }
 
-  void initUser() {
-    if (state.email.isPure || state.phone.isPure || state.username.isPure) {
+  Future<void> initUser() async {
+    if (state.email.value.isEmpty ||
+        state.phone.value.isEmpty ||
+        state.username.value.isEmpty) {
       final supabase = sl.get<Supabase>().client.auth;
       final email = EmailFormz.dirty(supabase.currentUser?.email ?? '');
       final phone =
