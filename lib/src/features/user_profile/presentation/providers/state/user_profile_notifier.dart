@@ -22,8 +22,14 @@ class UserProfileNotifier extends StateNotifier<UserProfileState> {
   }
 
   void changeEditing() {
+    if (state.isEditingEnabled) {
+      final supabase = sl.get<Supabase>().client.auth;
+      supabase.updateUser(UserAttributes(email: state.email.value, data: {
+        "username": state.username.value,
+        "phone": state.phone.value
+      }));
+    }
     state = state.copyWith(isEditingEnabled: !state.isEditingEnabled);
-    print(state.isEditingEnabled);
   }
 
   Future<void> initUser() async {
