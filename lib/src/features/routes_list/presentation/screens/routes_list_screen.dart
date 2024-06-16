@@ -12,15 +12,10 @@ class RoutesListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const List<RouteEntity> routes = [
       RouteEntity(
-          id: 0, name: 'Достопримечательности 1 ', cityName: 'Севастополь'),
-      RouteEntity(
-          id: 1, name: 'Достопримечательности 2 ', cityName: 'Симферополь'),
-      RouteEntity(
-          id: 2,
-          name: 'Достопримечательности 3 ',
-          cityName: 'Севастополь (Балаклава)'),
-      RouteEntity(id: 3, name: 'Достопримечательности 4 ', cityName: 'Ялта'),
-      RouteEntity(id: 4, name: 'Достопримечательности 5 ', cityName: 'Керч')
+          id: 0, name: 'Достопримечательности', cityName: 'Севастополь'),
+      RouteEntity(id: 1, name: 'Памятники ВОВ', cityName: 'Симферополь'),
+      RouteEntity(id: 2, name: 'Черноморские батареи', cityName: 'Севастополь'),
+      RouteEntity(id: 3, name: 'По парку Нахимова', cityName: 'Севастополь'),
     ];
     return Scaffold(
         appBar: AppBar(

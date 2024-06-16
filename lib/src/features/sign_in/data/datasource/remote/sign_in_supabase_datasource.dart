@@ -17,8 +17,8 @@ class SignInSupabaseDatasource implements SignInRemoteDatasource {
       //  token: supabase.currentSession!.accessToken.toString(),
       //);
       //return userModel; // supabase.currentSession!.accessToken.toString();
-    } catch (_) {
-      throw Exception('Failed to login');
+    } catch (ex) {
+      throw Exception('Failed to login with $ex');
     }
   }
 }

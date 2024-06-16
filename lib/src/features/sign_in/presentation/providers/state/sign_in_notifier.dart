@@ -35,7 +35,7 @@ class SignInNotifier extends StateNotifier<SignInState> {
     state = state.copyWith(isPasswordObscured: !state.isPasswordObscured);
   }
 
-  Future<void> signIn() async {
+  Future<SignInStatus> signIn() async {
     state = state.copyWith(status: SignInStatus.loading);
     try {
       await remoteRepository.signIn(
@@ -43,8 +43,11 @@ class SignInNotifier extends StateNotifier<SignInState> {
 
       state = state.copyWith(status: SignInStatus.success);
     } catch (ex) {
+      print('Exception is $ex');
       state = state.copyWith(status: SignInStatus.failure);
     }
+
+    return state.status;
   }
 }
 

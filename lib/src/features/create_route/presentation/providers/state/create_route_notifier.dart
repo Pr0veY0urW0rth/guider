@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:guider/src/core/supabase/supabase_injection.dart';
 import 'package:guider/src/features/create_route/domain/create_route_domain.dart';
 import 'package:guider/src/features/create_route/presentation/providers/state/create_route_state.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreateRouteNotifier extends StateNotifier<CreateRouteState> {
   CreateRouteNotifier() : super(const CreateRouteState());
@@ -29,42 +31,17 @@ class CreateRouteNotifier extends StateNotifier<CreateRouteState> {
     state = state.copyWith(city: city);
   }
 
-  void initRoute() {
-    const List<MarkEntity> initMarks = [
-      MarkEntity(
-          id: 0,
-          latitude: 0,
-          longitude: 0,
-          addres: 'Ул пушкина 1',
-          name: 'Памятник пушкина 1',
-          shortDescription: 'Памятник пушкина 2',
-          description: 'Памятник пушкина 2'),
-      MarkEntity(
-          id: 1,
-          latitude: 0,
-          longitude: 0,
-          addres: 'Ул пушкина 2',
-          name: 'Памятник пушкина 2',
-          shortDescription: 'Памятник пушкина 2',
-          description: 'Памятник пушкина '),
-      MarkEntity(
-          id: 2,
-          latitude: 0,
-          longitude: 0,
-          addres: 'Ул пушкина 3',
-          name: 'Памятник пушкина 3',
-          shortDescription: 'Памятник пушкина 3',
-          description: 'Памятник пушкина 3'),
-      MarkEntity(
-          id: 3,
-          latitude: 0,
-          longitude: 0,
-          addres: 'Ул пушкина 4',
-          name: 'Памятник пушкина 4',
-          shortDescription: 'Памятник пушкина 4',
-          description: 'Памятник пушкина 4'),
-    ];
-    state = state.copyWith(marksList: initMarks);
+  void initRoute() async {
+    if (state.marksList.isEmpty) {
+      final supabase = sl.get<Supabase>().client;
+      final List<Map<String, dynamic>> data =
+          await supabase.from('Mark').select().order('MarkID', ascending: true);
+      final List<MarkEntity> marks = [];
+      for (var element in data) {
+        marks.add(MarkEntity.fromMap(element));
+      }
+      state = state.copyWith(marksList: marks);
+    }
   }
 }
 

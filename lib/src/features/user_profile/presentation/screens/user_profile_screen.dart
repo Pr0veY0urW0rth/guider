@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,9 @@ class UserProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      ref.read(userProfileNotifierProvider.notifier).initUser();
+    });
     final isEditingEnabled =
         ref.watch(userProfileNotifierProvider).isEditingEnabled;
     return Scaffold(
@@ -36,6 +40,8 @@ class UserProfileScreen extends ConsumerWidget {
               ),
               const Gap(10),
               UserProfileField(
+                initalText:
+                    ref.read(userProfileNotifierProvider).username.value,
                 label: 'Имя пользователя',
                 hintText: 'Имя пользователя',
                 isEditable: isEditingEnabled,
@@ -45,6 +51,7 @@ class UserProfileScreen extends ConsumerWidget {
               ),
               const Gap(8),
               UserProfileField(
+                initalText: ref.read(userProfileNotifierProvider).email.value,
                 label: 'Email',
                 hintText: 'Email',
                 isEditable: isEditingEnabled,
@@ -54,6 +61,7 @@ class UserProfileScreen extends ConsumerWidget {
               ),
               const Gap(8),
               UserProfileField(
+                initalText: ref.read(userProfileNotifierProvider).phone.value,
                 label: 'Номер телефона',
                 hintText: 'Номер телефона',
                 isEditable: isEditingEnabled,

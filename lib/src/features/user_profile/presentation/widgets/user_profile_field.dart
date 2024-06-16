@@ -10,6 +10,7 @@ class UserProfileField extends StatelessWidget {
     this.onEditingComplete,
     required this.label,
     required this.isEditable,
+    required this.initalText,
   });
 
   final Function(String)? onChanged;
@@ -17,6 +18,7 @@ class UserProfileField extends StatelessWidget {
   final FocusNode? focusNode;
   final String? hintText;
   final String label;
+  final String initalText;
   final VoidCallback? onEditingComplete;
   final bool isEditable;
 
@@ -33,6 +35,7 @@ class UserProfileField extends StatelessWidget {
       onChanged: onChanged,
       onEditingComplete: onEditingComplete,
       readOnly: !isEditable,
+      initialValue: initalText,
     );
   }
 }

@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -46,13 +49,14 @@ class MarkEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'latitude': latitude,
       'longitude': longitude,
       'addres': addres,
       'name': name,
       'shortDescription': shortDescription,
       'description': description,
-      'images': images.toString(),
+      //'images': images.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -72,4 +76,22 @@ class MarkEntity extends Equatable {
       images,
     ];
   }
+
+  factory MarkEntity.fromMap(Map<String, dynamic> map) {
+    return MarkEntity(
+      id: map['MarkID'] as int,
+      latitude: map['Latitude'] as double,
+      longitude: map['Longitude'] as double,
+      addres: map['Address'] as String,
+      name: map['Markname'] as String,
+      shortDescription: map['ShortDescription'] as String,
+      description: map['LongDescription'] as String,
+      //images: List<Image>.from((map['images'] as List<int>).map<Image>((x) => Image.fromMap(x as Map<String,dynamic>),),),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory MarkEntity.fromJson(String source) =>
+      MarkEntity.fromMap(json.decode(source) as Map<String, dynamic>);
 }

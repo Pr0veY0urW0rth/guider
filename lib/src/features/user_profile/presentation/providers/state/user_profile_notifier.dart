@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:guider/src/core/supabase/supabase_injection.dart';
 import 'package:guider/src/features/user_profile/domain/user_profile_domain.dart';
 import 'package:guider/src/features/user_profile/presentation/providers/state/user_profile_state.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserProfileNotifier extends StateNotifier<UserProfileState> {
   UserProfileNotifier() : super(const UserProfileState());
@@ -22,6 +24,18 @@ class UserProfileNotifier extends StateNotifier<UserProfileState> {
   void changeEditing() {
     state = state.copyWith(isEditingEnabled: !state.isEditingEnabled);
     print(state.isEditingEnabled);
+  }
+
+  void initUser() {
+    if (state.email.isPure || state.phone.isPure || state.username.isPure) {
+      final supabase = sl.get<Supabase>().client.auth;
+      final email = EmailFormz.dirty(supabase.currentUser?.email ?? '');
+      final phone =
+          PhoneFormz.dirty(supabase.currentUser?.userMetadata?["phone"] ?? '');
+      final username = UsernameFormz.dirty(
+          supabase.currentUser?.userMetadata?["username"] ?? '');
+      state = state.copyWith(email: email, phone: phone, username: username);
+    }
   }
 }
 

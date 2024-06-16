@@ -11,12 +11,13 @@ class SignUpSupabaseDatasource implements SignUpRemoteDatasource {
       await supabase.signUp(
           email: user.email!,
           password: user.password!,
-          phone: user.phone!,
+          //phone: user.phone!,
           data: {
+            "phone": user.phone!,
             "username": user.username!,
           });
-    } catch (_) {
-      return;
+    } catch (ex) {
+      throw Exception('Failed to sign up with $ex');
     }
   }
 }

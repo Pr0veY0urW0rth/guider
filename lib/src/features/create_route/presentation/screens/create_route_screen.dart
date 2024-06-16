@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -11,18 +12,29 @@ class CreateRouteScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      ref.read(createRouteNotifierProvider.notifier).initRoute();
+    });
+
     final marks = ref.watch(createRouteNotifierProvider).marksList;
     final checkedMarks =
         ref.watch(createRouteNotifierProvider).selectedMarksList;
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.blueAccent,
           title: Row(
             children: [
               IconButton(
                   onPressed: () => context.go(GuiderNavigationHelper.mapPath),
-                  icon: const Icon(Icons.arrow_back)),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  )),
               const Gap(10),
-              const Text('Введите данные маршрута')
+              const Text(
+                'Введите данные маршрута',
+                style: TextStyle(color: Colors.white),
+              )
             ],
           ),
         ),
@@ -30,6 +42,7 @@ class CreateRouteScreen extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 CreateRouteTextField(
                   label: 'Название',
@@ -50,8 +63,9 @@ class CreateRouteScreen extends ConsumerWidget {
                 const Text('Выберите метки маршрута'),
                 const Gap(8),
                 ListView.builder(
-                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
                     scrollDirection: Axis.vertical,
                     itemCount: marks.length,
                     itemBuilder: (context, index) {
@@ -66,7 +80,10 @@ class CreateRouteScreen extends ConsumerWidget {
                     }),
                 CreateRouteButton(
                   'Сохранить',
-                  onPressed: () => context.go(GuiderNavigationHelper.mapPath),
+                  onPressed: () => {
+                    context.go(GuiderNavigationHelper.mapPath),
+                    ref.invalidate(createRouteNotifierProvider)
+                  },
                 ),
               ],
             ),

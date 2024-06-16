@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:guider/src/core/supabase/supabase_injection.dart';
 import 'package:guider/src/core/widgets/tab_bar/tab_bar.dart';
 import 'package:guider/src/features/create_route/presentation/screens/create_route_screen.dart';
 import 'package:guider/src/features/map/presentation/screens/map_screen.dart';
@@ -7,6 +8,7 @@ import 'package:guider/src/features/routes_list/presentation/screens/routes_list
 import 'package:guider/src/features/sign_in/presentation/screens/sign_in_screen.dart';
 import 'package:guider/src/features/sign_up/presentation/screens/sign_up_screen.dart';
 import 'package:guider/src/features/user_profile/presentation/screens/user_profile_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GuiderNavigationHelper {
   static final GuiderNavigationHelper _instance =
@@ -127,9 +129,11 @@ class GuiderNavigationHelper {
       ),
     ];
 
+    final supabase = sl.get<Supabase>().client.auth;
+
     router = GoRouter(
       navigatorKey: parentNavigatorKey,
-      initialLocation: signInPath,
+      initialLocation: supabase.currentSession == null ? signInPath : mapPath,
       routes: routes,
     );
   }

@@ -126,22 +126,24 @@ class SignUpScreen extends ConsumerWidget {
                         onPressed: () async {
                           await ref
                               .read(signUpNotifierProvider.notifier)
-                              .signUp();
-                          if (context.mounted) {
-                            if (formStatus.isFailure) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content:
-                                      Text('Ошибка при создании аккаунта!'),
-                                  backgroundColor: Colors.redAccent,
-                                ),
-                              );
+                              .signUp()
+                              .then((status) {
+                            if (context.mounted) {
+                              if (status.isFailure) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text('Ошибка при создании аккаунта!'),
+                                    backgroundColor: Colors.redAccent,
+                                  ),
+                                );
+                              }
+                              if (status.isSuccess) {
+                                ref.invalidate(signUpNotifierProvider);
+                                context.go(GuiderNavigationHelper.mapPath);
+                              }
                             }
-                            if (formStatus.isSuccess) {
-                              ref.invalidate(signUpNotifierProvider);
-                              context.go(GuiderNavigationHelper.mapPath);
-                            }
-                          }
+                          });
                         },
                       ),
                 const Gap(16),

@@ -15,9 +15,9 @@ class CreateRouteMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //width: MediaQuery.of(context).size.width * 0.8,
-      height: 60,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: 100,
       child: Padding(
         padding: EdgeInsets.all(4),
         child: Row(
@@ -25,9 +25,22 @@ class CreateRouteMark extends StatelessWidget {
           children: [
             Column(
               children: [
-                Text(name),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: Text(
+                    name,
+                    maxLines: 3,
+                    softWrap: true,
+                  ),
+                ),
                 const Gap(4),
-                Text(addres),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: Text(
+                    addres,
+                    maxLines: 3,
+                  ),
+                ),
               ],
             ),
             Checkbox(value: isMarked, onChanged: onChanged)

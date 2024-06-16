@@ -68,7 +68,7 @@ class SignUpNotifier extends StateNotifier<SignUpState> {
         isRepeatedPasswordObscured: !state.isRepeatedPasswordObscured);
   }
 
-  Future<void> signUp() async {
+  Future<SignUpStatus> signUp() async {
     state = state.copyWith(status: SignUpStatus.loading);
     try {
       await remoteRepository.signUp(UserEntity(
@@ -79,8 +79,10 @@ class SignUpNotifier extends StateNotifier<SignUpState> {
 
       state = state.copyWith(status: SignUpStatus.success);
     } catch (ex) {
+      print('Exception is $ex');
       state = state.copyWith(status: SignUpStatus.failure);
     }
+    return state.status;
   }
 }
 
