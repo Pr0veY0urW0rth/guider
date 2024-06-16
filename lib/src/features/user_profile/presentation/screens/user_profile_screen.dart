@@ -16,9 +16,10 @@ class UserProfileScreen extends ConsumerWidget {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await ref.read(userProfileNotifierProvider.notifier).initUser();
     });
-    final username = ref.watch(userProfileNotifierProvider).username.value;
-    final email = ref.watch(userProfileNotifierProvider).email.value;
-    final phone = ref.watch(userProfileNotifierProvider).phone.value;
+    final username = ref.watch(userProfileNotifierProvider).username;
+    final email = ref.watch(userProfileNotifierProvider).email;
+    final phone = ref.watch(userProfileNotifierProvider).phone;
+    final formIsValid = ref.watch(userProfileNotifierProvider).formIsValid;
 
     final isEditingEnabled =
         ref.watch(userProfileNotifierProvider).isEditingEnabled;
@@ -27,8 +28,10 @@ class UserProfileScreen extends ConsumerWidget {
         title: const Text('Профиль'),
         centerTitle: true,
       ),
-      body: username.isEmpty
-          ? CircularProgressIndicator()
+      body: username.value.isEmpty
+          ? const CircularProgressIndicator(
+              color: Colors.blueAccent,
+            )
           : Padding(
               padding: const EdgeInsets.all(8),
               child: SingleChildScrollView(
@@ -46,36 +49,40 @@ class UserProfileScreen extends ConsumerWidget {
                     ),
                     const Gap(10),
                     UserProfileField(
-                      initalText: username,
+                      initalText: username.value,
                       label: 'Имя пользователя',
                       hintText: 'Имя пользователя',
                       isEditable: isEditingEnabled,
+                      validator: (value) => username.error?.getMessage(),
                       onChanged: (username) => ref
                           .read(userProfileNotifierProvider.notifier)
                           .updateUsername(username),
                     ),
-                    const Gap(8),
+                    const Gap(12),
                     UserProfileField(
-                      initalText: email,
+                      initalText: email.value,
                       label: 'Email',
                       hintText: 'Email',
                       isEditable: isEditingEnabled,
+                      validator: (value) => email.error?.getMessage(),
                       onChanged: (email) => ref
                           .read(userProfileNotifierProvider.notifier)
                           .updateEmail(email),
                     ),
-                    const Gap(8),
+                    const Gap(12),
                     UserProfileField(
-                      initalText: phone,
+                      initalText: phone.value,
                       label: 'Номер телефона',
                       hintText: 'Номер телефона',
                       isEditable: isEditingEnabled,
+                      validator: (value) => phone.error?.getMessage(),
                       onChanged: (phone) => ref
                           .read(userProfileNotifierProvider.notifier)
                           .updatePhone(phone),
                     ),
                     const Gap(16),
                     UserProfileButton(
+                      enabled: formIsValid,
                       isEditingEnabled ? 'Сохранить данные' : 'Изменить данные',
                       onPressed: () => ref
                           .read(userProfileNotifierProvider.notifier)

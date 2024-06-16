@@ -11,6 +11,7 @@ class UserProfileField extends StatelessWidget {
     required this.label,
     required this.isEditable,
     required this.initalText,
+    this.validator,
   });
 
   final Function(String)? onChanged;
@@ -21,6 +22,7 @@ class UserProfileField extends StatelessWidget {
   final String initalText;
   final VoidCallback? onEditingComplete;
   final bool isEditable;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
