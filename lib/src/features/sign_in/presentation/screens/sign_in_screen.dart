@@ -74,11 +74,20 @@ class SignInScreen extends ConsumerWidget {
                           await ref
                               .read(signInNotifierProvider.notifier)
                               .signIn();
-                          //if (formStatus.isSuccess) {
-                          ref.invalidate(signInNotifierProvider);
                           if (context.mounted) {
-                            context.go(GuiderNavigationHelper.mapPath);
-                            //}
+                            if (formStatus.isFailure) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Ошибка входа'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                            }
+                            if (formStatus.isSuccess) {
+                              ref.invalidate(signInNotifierProvider);
+
+                              context.go(GuiderNavigationHelper.mapPath);
+                            }
                           }
                         },
                       ),

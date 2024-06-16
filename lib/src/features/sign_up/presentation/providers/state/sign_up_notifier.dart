@@ -1,10 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:guider/src/features/sign_up/domain/entities/user.dart';
+import 'package:guider/src/features/sign_up/domain/providers/sign_up_providers.dart';
+import 'package:guider/src/features/sign_up/domain/repository/sign_up_remote_repository.dart';
 import 'package:guider/src/features/sign_up/domain/sign_up_domain.dart';
 import 'package:guider/src/features/sign_up/presentation/providers/state/sign_up_state.dart';
 
 class SignUpNotifier extends StateNotifier<SignUpState> {
-  SignUpNotifier() : super(const SignUpState());
+  final SignUpRemoteRepository remoteRepository;
+
+  SignUpNotifier(this.remoteRepository) : super(const SignUpState());
 
   void updateUsername(String value) {
     final username = UsernameFormz.dirty(value);
@@ -64,15 +69,21 @@ class SignUpNotifier extends StateNotifier<SignUpState> {
   }
 
   Future<void> signUp() async {
-    //todo : add repository
-    //state = state.copyWith(status: SignUpStatus.loading);
+    state = state.copyWith(status: SignUpStatus.loading);
+    try {
+      await remoteRepository.signUp(UserEntity(
+          email: state.email.value,
+          password: state.password.value,
+          username: state.username.value,
+          phone: state.phone.value));
 
-    //Future.delayed(const Duration(seconds: 5));
-
-    state = state.copyWith(status: SignUpStatus.success);
+      state = state.copyWith(status: SignUpStatus.success);
+    } catch (ex) {
+      state = state.copyWith(status: SignUpStatus.failure);
+    }
   }
 }
 
 final signUpNotifierProvider =
     StateNotifierProvider<SignUpNotifier, SignUpState>(
-        (ref) => SignUpNotifier());
+        (ref) => SignUpNotifier(ref.watch(signUpRemoteRepositoryProvider)));

@@ -1,3 +1,5 @@
+import 'package:guider/src/features/sign_in/data/models/user.dart';
+
 abstract class SignInRemoteDatasource {
-  Future<void> logIn();
+  Future<void> signIn(UserModel user);
 }

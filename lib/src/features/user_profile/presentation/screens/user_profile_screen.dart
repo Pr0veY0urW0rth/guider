@@ -70,8 +70,7 @@ class UserProfileScreen extends ConsumerWidget {
               ),
               const Gap(4),
               UserProfileLink(onLinkTap: () async {
-                final Uri url =
-                    Uri.parse('https://https://nickkalibr.github.io/');
+                final Uri url = Uri.parse('https://nickkalibr.github.io/');
                 if (!await launchUrl(url)) {
                   throw Exception('Could not launch $url');
                 }

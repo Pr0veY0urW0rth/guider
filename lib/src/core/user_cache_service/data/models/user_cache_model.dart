@@ -1,72 +1,83 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class UserCacheModel {
-  final String username;
-  final String email;
-  final String phone;
-  final String token;
+import 'package:guider/src/core/user_cache_service/domain/entities/user_cache_entity.dart';
+import 'package:hive/hive.dart';
+
+// part 'user_cache_model.g.dart';
+
+@HiveType(typeId: 1, adapterName: 'UserCacheModelAdapter')
+class UserCacheModel extends HiveObject {
   UserCacheModel({
-    required this.username,
+    required this.dataPassword,
     required this.email,
-    required this.phone,
+    required this.isSavingInSupabase,
     required this.token,
+    required this.isUsingPassword,
   });
 
+  factory UserCacheModel.fromEntity(UserCacheEntity user) {
+    return UserCacheModel(
+        email: user.email,
+        token: user.token,
+        dataPassword: user.dataPassword,
+        isSavingInSupabase: user.isUsingSupabase,
+        isUsingPassword: user.isUsingPassword);
+  }
+
+  factory UserCacheModel.fromJson(String source) =>
+      UserCacheModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  factory UserCacheModel.fromMap(Map<String, dynamic> map) {
+    return UserCacheModel(
+      dataPassword: map['dataPassword'] as String,
+      email: map['email'] as String,
+      isSavingInSupabase: map['isSavingInSupabase'] as bool,
+      token: map['token'] as String,
+      isUsingPassword: map['isUsingPassword'] as bool,
+    );
+  }
+
+  @HiveField(0)
+  final String email;
+
+  @HiveField(1)
+  final String token;
+
+  @HiveField(2)
+  final String dataPassword;
+
+  @HiveField(3)
+  final bool isSavingInSupabase;
+
+  @HiveField(4)
+  final bool isUsingPassword;
+
   UserCacheModel copyWith({
-    String? username,
+    String? dataPassword,
     String? email,
-    String? phone,
+    bool? isSavingInSupabase,
     String? token,
+    bool? isUsingPassword,
   }) {
     return UserCacheModel(
-      username: username ?? this.username,
+      dataPassword: dataPassword ?? this.dataPassword,
       email: email ?? this.email,
-      phone: phone ?? this.phone,
+      isSavingInSupabase: isSavingInSupabase ?? this.isSavingInSupabase,
       token: token ?? this.token,
+      isUsingPassword: isUsingPassword ?? this.isUsingPassword,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'username': username,
+      'dataPassword': dataPassword,
       'email': email,
-      'phone': phone,
+      'isSavingInSupabase': isSavingInSupabase,
       'token': token,
+      'isUsingPassword': isUsingPassword,
     };
   }
 
-  factory UserCacheModel.fromMap(Map<String, dynamic> map) {
-    return UserCacheModel(
-      username: map['username'] as String,
-      email: map['email'] as String,
-      phone: map['phone'] as String,
-      token: map['token'] as String,
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory UserCacheModel.fromJson(String source) =>
-      UserCacheModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'UserCacheModel(username: $username, email: $email, phone: $phone, token: $token)';
-  }
-
-  @override
-  bool operator ==(covariant UserCacheModel other) {
-    if (identical(this, other)) return true;
-
-    return other.username == username &&
-        other.email == email &&
-        other.phone == phone &&
-        other.token == token;
-  }
-
-  @override
-  int get hashCode {
-    return username.hashCode ^ email.hashCode ^ phone.hashCode ^ token.hashCode;
-  }
 }
